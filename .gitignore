@@ -1,0 +1,56 @@
+# ======================
+# Node backend
+# ======================
+backend/node_modules/
+backend/npm-debug.log*
+backend/yarn-debug.log*
+backend/yarn-error.log*
+backend/pnpm-debug.log*
+backend/lerna-debug.log*
+backend/dist/
+backend/dist-ssr/
+backend/*.local
+
+# ======================
+# Frontend (Vite + React)
+# ======================
+frontend/node_modules/
+frontend/dist/
+frontend/dist-ssr/
+frontend/*.local
+frontend/npm-debug.log*
+frontend/yarn-debug.log*
+frontend/yarn-error.log*
+frontend/pnpm-debug.log*
+frontend/lerna-debug.log*
+
+# ======================
+# Logs
+# ======================
+logs/
+*.log
+
+# ======================
+# Docker
+# ======================
+*.log
+docker-compose.override.yml
+**/data/db/   # local MongoDB volume, if any
+
+# ======================
+# Editor directories and IDE
+# ======================
+.vscode/
+!.vscode/extensions.json
+.idea/
+.DS_Store
+*.suo
+*.ntvs*
+*.njsproj
+*.sln
+*.sw?
+
+# ======================
+# Environment
+# ======================
+.env
