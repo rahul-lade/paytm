@@ -4,6 +4,7 @@ const jwt = require("jsonwebtoken");
 const {JWT_SECRET} = require("../config");
 const { User } = require('../db');
 const { route } = require('./user');
+const { authMiddleware } = require('../middleware');
 
 const router = express.Router();
 
@@ -80,6 +81,54 @@ res.status(411).json({
     message:"error while logging in"
 })
 
+})
+
+// route for updating user info 
+const updateBody = zod.object({
+    password:zod.string().optional(),
+    firstName:zod.string.optional,
+    lastName:zod.string.optional()
+})
+router.put("/",authMiddleware,async(req,res)=>{
+    const {success} = updateBody.safeParse(req.body)
+    if(!success){
+        res.status(411).json({
+            message:"error while updating information"
+        })
+    }
+
+    await User.updateOne({_id:req.userId},req.body);
+
+    res.json({
+        message:"updated successfully"
+    })
+})
+
+
+// routes to get users from backend ( filter users )
+router.get("/bulk",async(req,res)=>{
+
+    const filter = req.query.filter ||"";
+
+    const users = await User.find({
+        $or:[{
+            firstName:{
+                "$regex":filter
+            }
+        },{
+            lastName:{
+                "$regex":filter
+            }
+        }]
+    })
+    res.json({
+        user:users.map(user=>({
+            username:user.username,
+            firstName:user.firstName,
+            lastName:user.lastName,
+            _id:user._id
+        }))
+    })
 })
 
 module.exports = router;
