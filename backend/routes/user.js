@@ -2,7 +2,7 @@ const express = require('express');
 const zod = require("zod");
 const jwt = require("jsonwebtoken");
 const {JWT_SECRET} = require("../config");
-const { User } = require('../db');
+const { User, Account } = require('../db');
 const { route } = require('./user');
 const { authMiddleware } = require('../middleware');
 
@@ -41,6 +41,13 @@ const user = await User.create({
 })
 const userId = user._id;
 
+
+// ////////create new account
+await Account.create({
+    userId,
+    balance:1+Math.random() * 10000
+})
+// ////////
 const token = jwt.sign({
     userId
 },JWT_SECRET);
@@ -48,7 +55,6 @@ res.json({
     message:"user created successfully",
     token:token
     })
-
 })
 
 // sign in route
